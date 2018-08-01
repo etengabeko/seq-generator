@@ -7,7 +7,11 @@
 
 namespace sequence
 {
-
+/**
+ * @class ThreadSafeGenerator
+ * @brief Потокобезопасный генератор последовательности числовых значений.
+ * @sa BaseGenerator
+ */
 template <typename T,
           typename IncOp = details::CustomIncrement<T>>
 class ThreadSafeGenerator
@@ -22,6 +26,12 @@ public:
     ThreadSafeGenerator(const T& startValue, IncOp increment) :
         m_gen(startValue, increment)
     { }
+
+    void reset()
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_mutex);
+        m_gen.reset();
+    }
 
     T next()
     {
