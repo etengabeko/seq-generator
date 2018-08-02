@@ -74,7 +74,8 @@ template <typename T, typename IncOp>
 void testGeneratorOverflow(T startValue, IncOp increment)
 {
     BaseGenerator<T, IncOp> gen(startValue, increment);
-    EXPECT_EQ(gen.next(), startValue);
+    for (size_t i = 0; i < 100; ++i)
+        EXPECT_EQ(gen.next(), startValue);
 }
 
 } // details
